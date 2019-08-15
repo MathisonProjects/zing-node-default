@@ -1,17 +1,15 @@
-var express = require("express");
-var fs = require ('fs');
-var app = express();
-var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-var port = 3001;
-var http = require('http').Server(app);
+#!/usr/bin/env nodejs
+var https = require('https');
+const fs = require('fs');
 
-var io = require('socket.io')(http);
+const options = {
+  key: fs.readFileSync('/etc/apache2/ssl/website_ssl.key'),
+  cert: fs.readFileSync('/etc/apache2/ssl/cloudflare/cloudflare.subdomain.zing.land.pem')
+};
 
+https.createServer(options, (request, response) => {
+   response.writeHead(200, {'Content-Type': 'text/plain'});
+   response.end('Hello World! Node.js is working correctly.\n');
+}).listen(4000);
 
-io.on('connection', function(socket){
-
-});
-
-http.listen(port, function(){
-  console.log('listening on *:'+port);
-});
+console.log('Server running at https://127.0.0.1:4000/');
